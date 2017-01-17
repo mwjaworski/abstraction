@@ -1,0 +1,28 @@
+{
+  "name": "abstraction",
+  "version": "0.1.0",
+  "description": "Monads to support FP",
+  "license": "MIT",
+  "main": "lib/index.ts",
+  "keywords": [
+    "functional",
+    "programming",
+    "monad"
+  ],
+  "ignore": [
+    "node_modules",
+    "vendor",
+    "/.*",
+    "/*.js",
+    "/*.json",
+    "/*.yml",
+    "/*.bkp"
+  ],
+  "dependencies": {
+    "chai": "3.5.0",
+    "lodash": "4.17.0"
+  },
+  "devDependencies": {
+    
+  }
+}

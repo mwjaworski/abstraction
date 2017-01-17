@@ -1,0 +1,26 @@
+{
+  "name": "abstraction",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=6.5.0"
+  },
+  "license": "MIT",
+  "main": "lib/index.ts",
+  "keywords": [
+    "functional",
+    "programming",
+    "monad"
+  ],
+  "repository": {
+    "type": "https",
+    "url": "https://github.com/mwjaworski/abstraction.git"
+  },
+  "devDependencies": {    
+    "gulp": "3.9.1",
+    "chai": "3.5.0",
+    "typescript": "2.1.4"
+  },
+  "dependencies": {
+    "lodash": "4.17.0"
+  }
+}
