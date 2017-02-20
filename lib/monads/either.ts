@@ -1,8 +1,8 @@
 import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid, IFilterable, IBifunctor, ICatamorphism } from '../core/algebra';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 import {
-  isEqual as isEqual_4
-} from 'lodash-fp';
+  isEqual
+} from 'lodash';
 
 export interface IEither<A> extends IMonad<A>, ISetoid<A>, IFilterable<A>, IBifunctor<A>, ICatamorphism<A> {
   readonly isLeft: () => boolean;
@@ -53,7 +53,7 @@ class Left<A> implements ILeft<A> {
 
   equals(a: IEither<A>): boolean {
     return (a.isLeft)
-      ? isEqual_4(this._value, (a as any)._value)
+      ? isEqual(this._value, (a as any)._value)
       : false;
   }
 
@@ -127,7 +127,7 @@ class Right<A> implements IRight<A> {
 
   equals(a: IEither<A>): boolean {
     return (a.isRight)
-      ? isEqual_4(this._value, (a as any)._value)
+      ? isEqual(this._value, (a as any)._value)
       : false;
   }
 

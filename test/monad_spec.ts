@@ -1,14 +1,11 @@
-/// <reference path="../typings/globals/mocha/index.d.ts" />
-/// <reference path="../typings/globals/chai/index.d.ts" />
-/// <reference path="../typings/globals/require/index.d.ts" />
-
+import 'mocha';
 import { expect } from 'chai';
-import { IMonad } from '../dist/core/algebra';
-import { Identity, IIdentity } from '../dist/monads/identity';
-import { Maybe, IMaybe } from '../dist/monads/maybe';
-import { Either, IEither } from '../dist/monads/either';
-
-const _: any = require('lodash');
+import { IMonad } from '../lib/core/algebra';
+import { Identity, IIdentity } from '../lib/monads/identity';
+import { Maybe, IMaybe } from '../lib/monads/maybe';
+import { Either, IEither } from '../lib/monads/either';
+import * as _ from 'lodash';
+import { CurriedFunction3 } from 'lodash';
 
 describe('Functional Algebra', function (): void {
   describe('Identity', function (): void {
@@ -53,7 +50,7 @@ describe('Functional Algebra', function (): void {
 
     it('should allow ap to apply methods', () => {
 
-      const namePerson: ((s: string) => string) = _.curry(function (forename: string, surname: string, address: string): string {
+      const namePerson: CurriedFunction3<string, string, string, string> = _.curry(function (forename: string, surname: string, address: string): string {
           return `${forename} ${surname} lives in ${address}`;
       });
 

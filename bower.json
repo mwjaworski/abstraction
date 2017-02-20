@@ -1,28 +1,27 @@
 {
-  "name": "abstraction",
-  "version": "0.1.0",
-  "description": "Monads to support FP",
-  "license": "MIT",
-  "main": "lib/index.ts",
-  "keywords": [
-    "functional",
-    "programming",
-    "monad"
+  "name": "simple-ui_compute",
+  "version": "1.0.0",
+  "homepage": "https://github.com/simple-ui/microkanren",
+  "authors": [
+    "Michael Jaworski <mjaworski@acm.org>"
   ],
+  "description": "",
+  "main": "lib/index.js",
+  "private": false,
+  "keywords": [
+    "dependency",
+    "injection"
+  ],
+  "license": "MIT",
   "ignore": [
+    ".*",
     "node_modules",
-    "vendor",
-    "/.*",
-    "/*.js",
-    "/*.json",
-    "/*.yml",
-    "/*.bkp"
+    "bower_components",
+    "test",
+    "tests",
+    "benchmark"
   ],
   "dependencies": {
-    "chai": "3.5.0",
-    "lodash": "4.17.0"
-  },
-  "devDependencies": {
-    
+    "lodash": "4.17.4"
   }
 }
