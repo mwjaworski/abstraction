@@ -1,8 +1,8 @@
 import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid } from '../core/algebra';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 
-type effect_fn<V> = () => V;
-type value_fn<V, W> = (value: V) => W;
+export type effect_fn<V> = () => V;
+export type value_fn<V, W> = (value: V) => W;
 
 export class IO<V> {
 

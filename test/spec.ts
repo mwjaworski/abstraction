@@ -1,11 +1,11 @@
-import 'mocha';
+import * as mocha from 'mocha';
 import { expect } from 'chai';
 import { IMonad } from '../lib/core/algebra';
 import { Identity, IIdentity } from '../lib/monads/identity';
 import { Maybe, IMaybe } from '../lib/monads/maybe';
 import { Either, IEither } from '../lib/monads/either';
-import * as _ from 'lodash';
 import { CurriedFunction3 } from 'lodash';
+import * as _ from 'lodash';
 
 describe('Functional Algebra', function (): void {
   describe('Identity', function (): void {
