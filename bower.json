@@ -1,11 +1,11 @@
 {
-  "name": "simple-ui_compute",
+  "name": "@simple-ui/compute",
   "version": "1.0.0",
   "homepage": "https://github.com/simple-ui/compute",
   "authors": [
     "Michael Jaworski <mjaworski@acm.org>"
   ],
-  "description": "",
+  "description": "A library of TypeScript monads.",
   "main": "lib/index.js",
   "private": false,
   "keywords": [

@@ -8,4 +8,4 @@
 
 ### 1.0.0
 
-- INITIAL simple-ui_compute commit
+- INITIAL @simple-ui/compute commit

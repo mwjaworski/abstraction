@@ -12,19 +12,19 @@ describe('Functional Algebra', function (): void {
 
     it('should output a value with `toString`', () => {
 
-      expect(Identity.of<number>(6).toString()).to.equal('Identity(6)');
+      expect(Identity.of(6).toString()).to.equal('Identity(6)');
 
     });
 
     it('should bind/map with the Identity Monad', () => {
 
-      const correctCount: number = 4;
+      const correctCount = 4;
 
-      const get: string = Identity.of<number>(6)
-        .map<number>((wrongCount: number): number => wrongCount + correctCount)
-        .map<number>((totalCount: number): number => correctCount / totalCount)
-        .map<number>((ratio: number): number => Math.round(100 * ratio))
-        .map<string>((ratio: number): string => ratio + '%')
+      const get: string = Identity.of(6)
+        .map((wrongCount: number): number => wrongCount + correctCount)
+        .map((totalCount: number): number => correctCount / totalCount)
+        .map((ratio: number): number => Math.round(100 * ratio))
+        .map((ratio: number): string => ratio + '%')
         .orElse(() => 'undefined');
 
       expect(get).to.equal('40%');

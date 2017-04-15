@@ -1,7 +1,7 @@
 {
-  "name": "simple-ui_compute",
+  "name": "@simple-ui/compute",
   "version": "1.0.0",
-  "description": "",
+  "description": "A library of TypeScript monads.",
   "main": "lib/index.ts",
   "private": false,
   "files": [
@@ -44,7 +44,7 @@
   "dependencies": {
     "@types/lodash": "4.14.53",
     "lodash": "4.17.4",
-    "typescript": "2.2.1"
+    "typescript": "2.2.2"
   },
   "devDependencies": {
     "@types/chai": "3.4.35",
