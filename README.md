@@ -29,6 +29,8 @@ To import the full library into a file you can destructure the export object.
 import { Either, IEither } from '@simple-ui/compute';
 ```
 
+> This was built for me to study monads. It's an experiment.
+
 ## Reference
 
 The library is composed of separate [monads](https://bartoszmilewski.com/2011/01/09/monads-for-the-curious-programmer-part-1/)
