@@ -1,4 +1,6 @@
 import { IMonad, ICatamorphism } from '../core/algebra';
+import { Maybe } from './maybe';
+import { Validation } from './validation';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 
 export class Either {
@@ -70,6 +72,14 @@ class Left<E> implements IEither<E> {
     return leftFn(this.__value);
   }
 
+  toMaybe() {
+    return Maybe.Nothing();
+  }
+
+  toValidation() {
+    return Validation.Failure(this.__value);
+  }
+
   toString: IToStringFn = toString;
   type: ITypeFn = type;
 }
@@ -124,6 +134,14 @@ class Right<A> implements IEither<A> {
 
   cata<B extends A>(rightFn: (value: A) => B, leftFn: (value: A) => B): B {
     return rightFn(this.__value);
+  }
+
+  toMaybe() {
+    return Maybe.Just(this.__value);
+  }
+
+  toValidation() {
+    return Validation.Success(this.__value);
   }
 
   toString: IToStringFn = toString;

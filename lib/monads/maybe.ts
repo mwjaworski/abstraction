@@ -1,4 +1,6 @@
 import { IMonad } from '../core/algebra';
+import { Either } from './either';
+import { Validation } from './validation';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 
 export class Maybe {
@@ -62,6 +64,14 @@ class Nothing<A> implements IMaybe<A> {
     return Maybe.Nothing<B>();
   }
 
+  toEither(failureValue: any) {
+    return Either.Left(failureValue);
+  }
+
+  toValidation(failureValue: any) {
+    return Validation.Success(failureValue);
+  }
+
   toString: IToStringFn = toString;
   type: ITypeFn = type;
 
@@ -113,6 +123,14 @@ class Just<A> implements IMaybe<A> {
 
   reduce<B>(fn: (acc: B, value: A) => B, acc: B): IMaybe<B> {
     return Just.of<B>(fn(acc, this.__value));
+  }
+
+  toEither(_0: void) {
+    return Either.Right(this.__value);
+  }
+
+  toValidation(_0: void) {
+    return Validation.Success(this.__value);
   }
 
   toString: IToStringFn = toString;

@@ -1,4 +1,6 @@
 import { IMonad, ICatamorphism, ISemigroup } from '../core/algebra';
+import { Either } from './either';
+import { Maybe } from './maybe';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 
 export class Validation {
@@ -92,6 +94,14 @@ class Failure<F> implements IValidation<F> {
     return failureFn(Semigroup.join(this.__value));
   }
 
+  toMaybe(_0: void) {
+    return Maybe.Nothing();
+  }
+
+  toEither(_0: void) {
+    return Either.Left(this.__value);
+  }
+
   toString: IToStringFn = toString;
   type: ITypeFn = type;
 }
@@ -146,6 +156,14 @@ class Success<A> implements IValidation<A> {
 
   cata<B extends A>(successFn: (value: A) => B, failureFn: (value: A) => B): B {
     return successFn(this.__value);
+  }
+
+  toMaybe(_0: void) {
+    return Maybe.Just(this.__value);
+  }
+
+  toEither(_0: void) {
+    return Either.Right(this.__value);
   }
 
   toString: IToStringFn = toString;
