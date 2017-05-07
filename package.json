@@ -17,7 +17,6 @@
     "toc": "node_modules/.bin/doctoc --github --title \"# Changelog\" CHANGELOG.md",
     "check": "npm run lint -s && node_modules/.bin/dependency-check package.json",
     "test": "node_modules/.bin/tsc -p . && mocha",
-    "posttest": "npm run cleanup -s",
     "prebuild": "npm run check -s && npm run clean -s",
     "build": "node_modules/.bin/webpack --optimize-minimize",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",

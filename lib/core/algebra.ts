@@ -6,43 +6,32 @@ export interface IApply<A> extends IFunctor<A> {
   ap<B, F>(monad: IMonad<F>): IMonad<B>;
 }
 
-export interface IApplicative<A> extends IApply<A> {
-  of(value: A): IApplicative<A>;
-}
-
 export interface IChain<A> extends IApply<A> {
-  bind<B>(fn: (value: A) => IMonad<B>): IMonad<B>;
+  chain<B>(fn: (value: A) => IMonad<B>): IMonad<B>;
 }
 
-export interface IMonad<A> extends IApplicative<A>, IChain<A> {
-  orElse<B>(defaultFn: () => B): A | B;
-  toString(): string;
-}
-
-export interface ISemigroup<A> {
-  concat<B>(semigroup: ISemigroup<A>): ISemigroup<B>;
-}
-
-export interface IMonoid<A> extends ISemigroup<A> {
-  empty(): IMonoid<A>;
-}
-
-export interface ISetoid<A> {
-  equals(setoid: ISetoid<A>): boolean;
+export interface IApplicative<A> extends IApply<A> {
+  of(value: A): IMonad<A>;
 }
 
 export interface IFoldable<A> {
-  reduce<B>(fn: (fold: B, element: any) => B, b: B): IFoldable<B>;
+  reduce<B>(fn: (acc: B, element: A) => B, acc: B): IMonad<B>;
 }
 
-export interface IFilterable<A> {
-  filter(fn: (value: A) => boolean): IFunctor<A>;
+export interface IValue<A> {
 }
 
-export interface IBifunctor<A> {
-  bimap(success: (value: A) => IBifunctor<A>, fail: (value: A) => IBifunctor<A>): IBifunctor<A>;
+export interface IMonad<A> extends IApplicative<A>, IChain<A>, IFoldable<A> {
+  orElse<B>(elseValue: IMonad<B>): IMonad<A | B>;
+  orSome<B>(someValue: B): A | B;
+  toString(): string;
+  type(): string;
 }
 
 export interface ICatamorphism<A> {
   cata (success: (value: A) => A, fail: (value: A) => A): A;
+}
+
+export interface ISemigroup<A> {
+  concat<B>(semigroup: ISemigroup<A>): ISemigroup<B>;
 }

@@ -1,49 +1,54 @@
-import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid } from '../core/algebra';
+import { IMonad } from '../core/algebra';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
 
-export type effect_fn<V> = () => V;
-export type value_fn<V, W> = (value: V) => W;
+export type d<E, W> = (Ealue: E) => W;
+export type w<W> = () => W;
 
-export class IO<V> {
+export class IO<E> implements IMonad<E> {
 
-  private _effect: effect_fn<V>;
+  private __value: () => E;
 
-  constructor(effect: effect_fn<V>) {
-    this._effect = effect;
+  constructor(effectFn: () => E) {
+    this.__value = effectFn;
   }
 
-  static of<V>(effect: effect_fn<V>): IO<V> {
-    return new IO(effect);
+  static of<E>(effect: E): IO<E> {
+    return new IO(() => effect);
   }
 
-  of(effect: effect_fn<V>): IO<V> {
+  of(effect: E): IO<E> {
     return IO.of(effect);
   }
 
-  bind<W>(fn: (effect: V) => IO<W>): IO<W> {
-    return IO.of(() => fn(this._effect()).run());
+  orSome<W>(someValue: W): IO<E | W> {
+    const effect = this.run();
+    return IO.of((effect != null) ? effect : someValue);
   }
 
-  map<W>(fn: value_fn<V, W>): IO<W> {
-    return IO.of(() => fn(this._effect()));
+  orElse<W>(elseValue: IO<W>): IO<E | W> {
+    const effect = this.run();
+    return (effect != null) ? IO.of(effect) : elseValue;
   }
 
-  ap<W, Y extends value_fn<V, W>>(io: IO<Y>): IO<W> {
-    return io.map((fn: value_fn<V, W>) => fn(this._effect()));
+  run(): E {
+    return this.__value();
   }
 
-  lift<W, Z, Y extends value_fn<W, Z>>(fn: value_fn<V, W>, io: IO<Y>): IO<Z> {
-    return this.map(fn).ap(io) as IO<Z>;
+  chain<W>(fn: (effect: E) => IO<W>): IO<W> {
+    return new IO(() => fn(this.run()).run());
   }
 
-  run(): V {
-    return this._effect();
+  map<W>(fn: (effect: E) => W): IO<W> {
+    return new IO(() => fn(this.run()));
   }
 
-  orElse<X>(defaultFn: effect_fn<X>): V | X {
-    return (typeof this._effect !== 'function')
-      ? defaultFn()
-      : this.run();
+  // TODO figure out the type of `fn` from the map
+  ap<W extends E, Y extends E>(io: IO<Y>): IO<W> {
+    return io.map((fn: any) => fn(this.run() as Y));
+  }
+
+  reduce<B>(fn: (acc: B, element: E) => B, acc: B): IO<B> {
+    return new IO<B>(() => fn(acc, this.run()));
   }
 
   toString: IToStringFn = toString;
