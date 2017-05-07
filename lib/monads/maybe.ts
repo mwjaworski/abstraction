@@ -1,7 +1,7 @@
 import { IMonad } from '../core/algebra';
 import { Either } from './either';
 import { Validation } from './validation';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export class Maybe {
   static of<A>(value: A | null | undefined): Just<A> | Nothing<A> {

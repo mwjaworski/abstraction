@@ -1,5 +1,5 @@
 import { IMonad } from '../core/algebra';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export interface IIdentity<A> extends IMonad<A> {
   

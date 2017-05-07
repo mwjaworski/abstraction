@@ -1,5 +1,5 @@
 import { IMonad } from '../core/algebra';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export type d<E, W> = (Ealue: E) => W;
 export type w<W> = () => W;

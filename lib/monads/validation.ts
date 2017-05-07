@@ -1,7 +1,7 @@
 import { IMonad, ICatamorphism, ISemigroup } from '../core/algebra';
 import { Either } from './either';
 import { Maybe } from './maybe';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export class Validation {
   static of<A>(value: A): Success<A> | Failure<A> {

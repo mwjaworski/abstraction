@@ -1,7 +1,7 @@
 import { IMonad, ICatamorphism } from '../core/algebra';
 import { Maybe } from './maybe';
 import { Validation } from './validation';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export class Either {
   static of<A>(value: A): Right<A> | Left<A> {

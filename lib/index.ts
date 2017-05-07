@@ -2,4 +2,4 @@ export * from './core/algebra';
 export * from './monads/identity';
 export * from './monads/maybe';
 export * from './monads/either';
-export * from './monads/io';
+export * from './monads/validation';
