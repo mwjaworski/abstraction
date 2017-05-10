@@ -4,9 +4,6 @@ import { Maybe } from './maybe';
 import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export class Validation {
-  static of<A>(value: A): Success<A> | Failure<A> {
-    return new Success<A>(value);
-  }
   static Success<A>(value: A): Success<A> {
     return new Success<A>(value);
   }
@@ -159,7 +156,7 @@ class Success<A> implements IValidation<A> {
   }
 
   toMaybe(_0: void) {
-    return Maybe.Just(this.__value);
+    return Maybe.of(this.__value);
   }
 
   toEither(_0: void) {

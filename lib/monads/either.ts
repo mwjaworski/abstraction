@@ -4,9 +4,6 @@ import { Validation } from './validation';
 import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
 export class Either {
-  static of<A>(value: A): Right<A> | Left<A> {
-    return new Right<A>(value);
-  }
   static Right<A>(value: A): Right<A> {
     return new Right<A>(value);
   }
@@ -137,7 +134,7 @@ class Right<A> implements IEither<A> {
   }
 
   toMaybe() {
-    return Maybe.Just(this.__value);
+    return Maybe.of(this.__value);
   }
 
   toValidation() {

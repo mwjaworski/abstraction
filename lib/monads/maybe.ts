@@ -9,9 +9,6 @@ export class Maybe {
       ? new Just<A>(value)
       : new Nothing<A>();
   }
-  static Just<A>(value: A): Just<A> {
-    return new Just<A>(value);
-  }
   static Nothing<A>(value?: A): Nothing<A> {
     return new Nothing<A>();
   }
@@ -122,7 +119,7 @@ class Just<A> implements IMaybe<A> {
   }
 
   reduce<B>(fn: (acc: B, value: A) => B, acc: B): IMaybe<B> {
-    return Just.of<B>(fn(acc, this.__value));
+    return Maybe.of<B>(fn(acc, this.__value));
   }
 
   toEither(_0: void) {

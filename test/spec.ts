@@ -39,7 +39,7 @@ describe('Functional Algebra', function (): void {
     it('should output a value with `toString` of Just(_)', () => {
 
       expect(Maybe.of(6).toString()).to.equal('Just(6)');
-      expect(Maybe.Just(6).toString()).to.equal('Just(6)');
+      expect(Maybe.of(12).toString()).to.equal('Just(12)');
 
     });
 
@@ -56,9 +56,9 @@ describe('Functional Algebra', function (): void {
       });
 
       const personName: string = Maybe.of(namePerson)
-        .ap(Maybe.Just('Tom'))
-        .ap(Maybe.Just('Baker'))
-        .ap(Maybe.Just('Dulwich, London'))
+        .ap(Maybe.of('Tom'))
+        .ap(Maybe.of('Baker'))
+        .ap(Maybe.of('Dulwich, London'))
         .orSome(undefined) as string;
 
       expect(personName).to.equal('Tom Baker lives in Dulwich, London');
@@ -128,14 +128,14 @@ describe('Functional Algebra', function (): void {
 
     it('should output a value with `toString`', () => {
 
-      expect(Either.of<number>(6).toString()).to.equal('Right(6)');
+      expect(Either.Right<number>(6).toString()).to.equal('Right(6)');
 
     });
 
     it('should carry a Right value', () => {
 
       const value: Object = Either
-        .of<Object>({
+        .Right<Object>({
           name: 'Test'
         })
         .map(_.property('name'))
@@ -174,14 +174,14 @@ describe('Functional Algebra', function (): void {
 
     it('should output a value with `toString`', () => {
 
-      expect(Validation.of<number>(6).toString()).to.equal('Success(6)');
+      expect(Validation.Success<number>(6).toString()).to.equal('Success(6)');
 
     });
 
     it('should carry a Success value', () => {
 
       const value: Object = Validation
-        .of<Object>({
+        .Success<Object>({
           name: 'Test'
         })
         .map(_.property('name'))
