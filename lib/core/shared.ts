@@ -11,5 +11,5 @@ export interface IToStringFn {
   (): string;
 }
 export function toString(): string {
-  return `${this.type()}(${this._value})`;
+  return `${this.type()}(${this.__value || ''})`;
 }

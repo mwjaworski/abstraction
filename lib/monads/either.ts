@@ -1,32 +1,28 @@
-import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid, IFilterable, IBifunctor, ICatamorphism } from '../core/algebra';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
-import _ from 'lodash';
+import { IMonad, ICatamorphism } from '../core/algebra';
+import { Maybe } from './maybe';
+import { Validation } from './validation';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
-export interface IEither<A> extends IMonad<A>, ISetoid<A>, IFilterable<A>, IBifunctor<A>, ICatamorphism<A> {
-  readonly isLeft: () => boolean;
-  readonly isRight: () => boolean;
-}
 export class Either {
-  static of<A>(value: A): IEither<A> {
+  static Right<A>(value: A): Right<A> {
     return new Right<A>(value);
   }
-  static Right<A>(value: A): IRight<A> {
-    return new Right<A>(value);
-  }
-  static Left<A>(value: A): ILeft<A> {
+  static Left<A>(value: A): Left<A> {
     return new Left<A>(value);
   }
 }
 
-export interface ILeft<A> extends IEither<A> {
-
+export interface IEither<A> extends IMonad<A>, ICatamorphism<A> {
+  readonly isLeft: () => boolean;
+  readonly isRight: () => boolean;
 }
-class Left<A> implements ILeft<A> {
 
-  private _value: A;
+class Left<E> implements IEither<E> {
 
-  constructor(v: A) {
-    this._value = v;
+  private __value: E;
+
+  constructor(error: E) {
+    this.__value = error;
   }
 
   isLeft(): boolean {
@@ -37,70 +33,60 @@ class Left<A> implements ILeft<A> {
     return false;
   }
 
-  static of<A>(value: A): IEither<A> {
-    return new Left<A>(value);
+  static of<E>(error: E): IEither<E> {
+    return new Left<E>(error);
   }
 
-  of(value: A): IEither<A> {
-    return Left.of(value);
+  of(error: E): IEither<E> {
+    return Left.of(error);
   }
 
-  orElse<B extends A>(defaultFn: () => B): A | B {
-    return this._value;
+  orSome<B extends E>(someValue: B): E | B {
+    return someValue;
   }
 
-  equals(a: IEither<A>): boolean {
-    return (a.isLeft)
-      ? _.isEqual(this._value, (a as any)._value)
-      : false;
+  orElse<B extends E>(elseValue: IEither<B>): IEither<E | B> {
+    return elseValue;
   }
 
-  bind<B>(fn: (value: A) => IEither<B>): IEither<A> {
+  chain<B>(fn: (value: E) => IEither<B>): IEither<E> {
     return this;
   }
 
-  map<B extends A>(fn: (value: A) => B): IEither<B> {
+  map<B extends E>(fn: (value: E) => B): IEither<B> {
     return this;
   }
 
-  private _leftMap<B extends A>(fn: (value: A) => B): IEither<B> {
-    return Left.of(fn(this._value));
-  }
-
-  ap<B>(monad: IEither<B>): IEither<A> {
+  ap<B>(monad: IEither<B>): IEither<E> {
     return this;
   }
 
-  lift<B>(mapFn: (value: A) => B, m2: IEither<B>): IEither<A> {
+  reduce<B extends E>(fn: (acc: B, element: E) => B, acc: B): IEither<B> {
     return this;
   }
 
-  filter(fn: (value: A) => boolean): IEither<A> {
-    return this;
+  cata<B extends E>(rightFn: (value: E) => B, leftFn: (value: E) => B): B {
+    return leftFn(this.__value);
   }
 
-  cata<B extends A>(rightFn: (value: A) => B, leftFn: (value: A) => B): B {
-    return leftFn(this._value);
+  toMaybe() {
+    return Maybe.Nothing();
   }
 
-  bimap<B extends A>(rightFn: (value: A) => B, leftFn: (value: A) => B): IEither<B> {
-    return this._leftMap(leftFn);
+  toValidation() {
+    return Validation.Failure(this.__value);
   }
 
-  type: ITypeFn = type;
   toString: IToStringFn = toString;
-
+  type: ITypeFn = type;
 }
 
-export interface IRight<A> extends IEither<A> {
+class Right<A> implements IEither<A> {
 
-}
-class Right<A> implements IRight<A> {
-
-  private _value: A;
+  private __value: A;
 
   constructor(v: A) {
-    this._value = v;
+    this.__value = v;
   }
 
   isLeft(): boolean {
@@ -119,48 +105,42 @@ class Right<A> implements IRight<A> {
     return Right.of(value);
   }
 
-  orElse<B extends A>(defaultFn: () => B): A | B {
-    return this._value;
+  orSome<B>(someValue: B): A | B {
+    return this.__value;
   }
 
-  equals(a: IEither<A>): boolean {
-    return (a.isRight)
-      ? _.isEqual(this._value, (a as any)._value)
-      : false;
+  orElse<B>(elseValue: IEither<B>): IEither<A | B> {
+    return this;
   }
 
-  bind<B>(fn: (value: A) => IEither<B>): IEither<B> {
-    return fn(this._value);
+  chain<B>(fn: (value: A) => IEither<B>): IEither<B> {
+    return fn(this.__value);
   }
 
   map<B>(fn: (value: A) => B): IEither<B> {
-    return Right.of(fn(this._value));
+    return Right.of(fn(this.__value));
   }
 
   ap<B>(monad: IEither<B>): IEither<B> {
-    return monad.map((fn: any): A | B => fn(this._value)) as IEither<B>;
+    return monad.map(this.__value as any) as IEither<B>;
   }
 
-  lift<B>(mapFn: (value: A) => B, m2: IEither<B>): IEither<B> {
-    return this.map(mapFn).ap(m2) as IEither<B>;
+  reduce<B>(fn: (acc: B, value: A) => B, acc: B): IEither<B> {
+    return Right.of<B>(fn(acc, this.__value));
   }
 
-  filter(fn: (value: A) => boolean): IEither<A> {
-    return (fn(this._value))
-      ? Right.of<A>(this._value)
-      : Left.of<A>(this._value);
-  }
-
-  // TODO review Fantasyland spec for order of functions in cata
   cata<B extends A>(rightFn: (value: A) => B, leftFn: (value: A) => B): B {
-    return rightFn(this._value);
+    return rightFn(this.__value);
   }
 
-  bimap<B extends A>(rightFn: (value: A) => B, leftFn: (value: A) => B): IEither<B> {
-    return this.map(rightFn);
+  toMaybe() {
+    return Maybe.of(this.__value);
   }
 
-  type: ITypeFn = type;
+  toValidation() {
+    return Validation.Success(this.__value);
+  }
+
   toString: IToStringFn = toString;
-
+  type: ITypeFn = type;
 }

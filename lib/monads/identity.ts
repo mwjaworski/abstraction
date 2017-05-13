@@ -1,15 +1,15 @@
-import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid } from '../core/algebra';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { IMonad } from '../core/algebra';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
-export interface IIdentity<A> extends IMonad<A>, ISetoid<A> {
-
+export interface IIdentity<A> extends IMonad<A> {
+  
 }
-export class Identity<A> implements IIdentity<A> {
+export class Identity<A> implements IMonad<A> {
 
-  private _value: A;
+  private __value: A;
 
   constructor(v: A) {
-    this._value = v;
+    this.__value = v;
   }
 
   static of<U>(value: U): Identity<U> {
@@ -20,31 +20,30 @@ export class Identity<A> implements IIdentity<A> {
     return Identity.of(value);
   }
 
-  orElse<B extends A>(defaultFn: () => B): A | B {
-    return this._value;
+  orSome<B extends A>(someValue: B): A | B {
+    return this.__value;
   }
 
-  equals(a: Identity<A>): boolean {
-    return this._value === a._value;
+  orElse<B extends A>(elseValue: Identity<B>): Identity<A | B> {
+    return this;
   }
 
-  bind<B>(fn: (value: A) => IMonad<B>): IMonad<B> {
-    return fn(this._value);
+  chain<B>(fn: (value: A) => Identity<B>): Identity<B> {
+    return fn(this.__value);
   }
 
-  map<B>(fn: (value: A) => B): IMonad<B> {
-    return Identity.of<B>(fn(this._value));
+  map<B>(fn: (value: A) => B): Identity<B> {
+    return Identity.of<B>(fn(this.__value));
   }
 
-  ap<B>(monad: IMonad<B>): IMonad<B> {
-    return monad.map(this._value as any) as IMonad<B>;
+  ap<B>(monad: Identity<B>): Identity<B> {
+    return monad.map(this.__value as any) as Identity<B>;
   }
 
-  lift<B>(mapFn: (value: A) => B, m2: IMonad<B>): IMonad<B> {
-    return this.map(mapFn).ap(m2) as IMonad<B>;
+  reduce<B>(fn: (acc: B, value: A) => B, acc: B): Identity<B> {
+    return Identity.of<B>(fn(acc, this.__value));
   }
 
   toString: IToStringFn = toString;
   type: ITypeFn = type;
-
 }

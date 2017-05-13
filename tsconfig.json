@@ -15,5 +15,8 @@
     "lib/**/*",
     "test/**/*",
     "node_modules/@types/*"
+  ],
+  "exclude": [
+    ".history/"
   ]
 }

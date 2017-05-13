@@ -1,33 +1,25 @@
-import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid, IFilterable } from '../core/algebra';
-import { type, toString, IToStringFn, ITypeFn } from '../core/id';
-import _ from 'lodash';
+import { IMonad } from '../core/algebra';
+import { Either } from './either';
+import { Validation } from './validation';
+import { type, toString, IToStringFn, ITypeFn } from '../core/shared';
 
-export interface IMaybe<A> extends IMonad<A>, ISetoid<A>, IFilterable<A> {
-  readonly isNothing: () => boolean;
-  readonly isJust: () => boolean;
-}
 export class Maybe {
-  static of<A>(value: A | null | undefined): IMaybe<A> {
+  static of<A>(value: A | null | undefined): Just<A> | Nothing<A> {
     return (value !== null && value !== undefined)
       ? new Just<A>(value)
       : new Nothing<A>();
   }
-  static Just<A>(value: A): IJust<A> {
-    return new Just<A>(value);
-  }
-  static Nothing<A>(value?: A): INothing<A> {
+  static Nothing<A>(value?: A): Nothing<A> {
     return new Nothing<A>();
   }
 }
 
-export interface INothing<A> extends IMaybe<A> {
-
+export interface IMaybe<A> extends IMonad<A> {
+  readonly isNothing: () => boolean;
+  readonly isJust: () => boolean;
 }
-class Nothing<A> implements INothing<A> {
 
-  static of<B>(_?: any): Nothing<B> {
-    return new Nothing<B>();
-  }
+class Nothing<A> implements IMaybe<A> {
 
   isNothing(): boolean {
     return true;
@@ -37,19 +29,23 @@ class Nothing<A> implements INothing<A> {
     return false;
   }
 
-  of<A>(_?: any): Nothing<A> {
-    return Nothing.of<A>(_);
+  static of<B>(_0?: any): Nothing<B> {
+    return new Nothing<B>();
   }
 
-  orElse<B extends A>(defaultFn: () => B): A | B {
-    return defaultFn();
+  of<A>(_0?: any): Nothing<A> {
+    return Nothing.of<A>();
   }
 
-  equals<B>(a: IMaybe<B>): boolean {
-    return a.isNothing();
+  orSome<B>(someValue: B): A | B {
+    return someValue;
   }
 
-  bind<B>(fn: (value: A) => IMaybe<B>): IMaybe<B> {
+  orElse<B>(elseValue: IMaybe<B>): IMaybe<A | B> {
+    return elseValue;
+  }
+
+  chain<B>(fn: (value: A) => IMaybe<B>): IMaybe<B> {
     return Maybe.Nothing<B>();
   }
 
@@ -61,31 +57,29 @@ class Nothing<A> implements INothing<A> {
     return monad;
   }
 
-  lift<B>(mapFn: (value: A) => B, m2: IMaybe<B>): IMaybe<B> {
-    return m2;
+  reduce<B>(fn: (acc: B, value: A) => B, acc: B): IMaybe<B> {
+    return Maybe.Nothing<B>();
   }
 
-  filter(fn: (value: A) => boolean): IMaybe<A> {
-    return Maybe.Nothing<A>();
+  toEither(failureValue: any) {
+    return Either.Left(failureValue);
   }
 
-  toString(): string {
-    return `${this.type()}`;
+  toValidation(failureValue: any) {
+    return Validation.Success(failureValue);
   }
 
+  toString: IToStringFn = toString;
   type: ITypeFn = type;
 
 }
 
-export interface IJust<A> extends IMaybe<A> {
+class Just<A> implements IMaybe<A> {
 
-}
-class Just<A> implements IJust<A> {
-
-  private _value: A;
+  private __value: A;
 
   constructor(v: A) {
-    this._value = v;
+    this.__value = v;
   }
 
   isNothing(): boolean {
@@ -104,36 +98,36 @@ class Just<A> implements IJust<A> {
     return Just.of(value);
   }
 
-  orElse<B extends A>(defaultFn: () => B): A | B {
-    return this._value;
+  orSome<B>(someValue: B): A | B {
+    return this.__value;
   }
 
-  equals(a: IMaybe<A>): boolean {
-    return (a.isJust)
-      ? _.isEqual(this._value, (a as any)._value)
-      : false;
+  orElse<B>(elseValue: IMaybe<B>): IMaybe<A | B> {
+    return this;
   }
 
-  bind<B>(fn: (value: A) => IMaybe<B>): IMaybe<B> {
-    return fn(this._value);
+  chain<B>(fn: (value: A) => IMaybe<B>): IMaybe<B> {
+    return fn(this.__value);
   }
 
   map<B>(fn: (value: A) => B): IMaybe<B> {
-    return Maybe.of(fn(this._value));
+    return Maybe.of(fn(this.__value));
   }
 
   ap<B>(monad: IMaybe<B>): IMaybe<B> {
-    return monad.map(this._value as any) as IMaybe<B>;
+    return monad.map(this.__value as any) as IMaybe<B>;
   }
 
-  lift<B>(mapFn: (value: A) => B, m2: IMaybe<B>): IMaybe<B> {
-    return this.map(mapFn).ap(m2) as IMaybe<B>;
+  reduce<B>(fn: (acc: B, value: A) => B, acc: B): IMaybe<B> {
+    return Maybe.of<B>(fn(acc, this.__value));
   }
 
-  filter(fn: (value: A) => boolean): IMaybe<A> {
-    return (fn(this._value))
-      ? Just.of<A>(this._value)
-      : Nothing.of<A>();
+  toEither(_0: void) {
+    return Either.Right(this.__value);
+  }
+
+  toValidation(_0: void) {
+    return Validation.Success(this.__value);
   }
 
   toString: IToStringFn = toString;
