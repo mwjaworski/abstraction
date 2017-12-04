@@ -1,0 +1,20 @@
+{
+  "name": "application",
+  "globalDependencies": {
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#5f91dac71523c5d57384bf135434ab74a9622090",
+    "angular-ui-router": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-router/angular-ui-router.d.ts#493d44982e5a935e29c79ac933761001211c9ef8",
+    "assertion-error": "github:DefinitelyTyped/DefinitelyTyped/assertion-error/assertion-error.d.ts#f3911d711006be676d9e1bcbc7c768b39d1ad81b",
+    "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#f3911d711006be676d9e1bcbc7c768b39d1ad81b",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#77b1b1709315b03b9b1b67c589d599bebeeef2ee",
+    "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash-3.10.d.ts#fdddacc2e801364decd875dee45bbaf90110631d",
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#f3911d711006be676d9e1bcbc7c768b39d1ad81b",
+    "moment": "github:DefinitelyTyped/DefinitelyTyped/moment/moment.d.ts#77b1b1709315b03b9b1b67c589d599bebeeef2ee",
+    "moment-node": "github:DefinitelyTyped/DefinitelyTyped/moment/moment-node.d.ts#77b1b1709315b03b9b1b67c589d599bebeeef2ee",
+    "require": "github:DefinitelyTyped/DefinitelyTyped/requirejs/require.d.ts#f3911d711006be676d9e1bcbc7c768b39d1ad81b",
+    "sinon": "github:DefinitelyTyped/DefinitelyTyped/sinon/sinon.d.ts#f3911d711006be676d9e1bcbc7c768b39d1ad81b"
+  },
+  "dependencies": {
+    "lodash-fp": "registry:npm/lodash#4.0.0+20161015015725"
+  }
+}

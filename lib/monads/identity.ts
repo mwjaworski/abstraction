@@ -1,5 +1,8 @@
 import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid } from '../core/algebra';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
+import { 
+  isEqual as _isEqual 
+} from 'lodash/fp';
 
 export interface IIdentity<A> extends IMonad<A>, ISetoid<A> {
 
@@ -12,7 +15,7 @@ export class Identity<A> implements IIdentity<A> {
     this._value = v;
   }
 
-  static of<U>(value: U): Identity<U> {
+  static of<A>(value: A): Identity<A> {
     return new Identity(value);
   }
 
@@ -25,7 +28,7 @@ export class Identity<A> implements IIdentity<A> {
   }
 
   equals(a: Identity<A>): boolean {
-    return this._value === a._value;
+    return _isEqual(this._value, a._value);
   }
 
   bind<B>(fn: (value: A) => IMonad<B>): IMonad<B> {
@@ -33,7 +36,7 @@ export class Identity<A> implements IIdentity<A> {
   }
 
   map<B>(fn: (value: A) => B): IMonad<B> {
-    return Identity.of<B>(fn(this._value));
+    return Identity.of(fn(this._value));
   }
 
   ap<B>(monad: IMonad<B>): IMonad<B> {

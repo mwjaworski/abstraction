@@ -11,14 +11,22 @@
     "programming",
     "monad"
   ],
+  "scripts": {
+    "pretest": "./node_modules/.bin/tsc --p ./",
+    "test": "./node_modules/.bin/mocha tests/*.js",
+    "posttest": "find lib -type f -name \"*.js\" -delete; find lib -type f -name \"*.js.map\" -delete; find tests -type f -name \"*.js\" -delete; find tests -type f -name \"*.js.map\" -delete"
+  },
   "repository": {
     "type": "https",
     "url": "https://github.com/mwjaworski/abstraction.git"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "gulp": "3.9.1",
     "chai": "3.5.0",
-    "typescript": "2.1.4"
+    "typescript": "2.1.4",
+    "typings": "2.0.0",
+    "tslint": "4.1.0",
+    "mocha": "3.2.0"
   },
   "dependencies": {
     "lodash": "4.17.0"

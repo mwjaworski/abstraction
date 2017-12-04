@@ -1,8 +1,8 @@
 import { IMonad, IFunctor, IApply, IApplicative, IChain, ISetoid, IFilterable } from '../core/algebra';
 import { type, toString, IToStringFn, ITypeFn } from '../core/id';
-import {
-  isEqual as isEqualFP
-} from 'lodash-fp';
+import { 
+  isEqual as _isEqual 
+} from 'lodash/fp';
 
 export interface IMaybe<A> extends IMonad<A>, ISetoid<A>, IFilterable<A> {
   readonly isNothing: () => boolean;
@@ -48,7 +48,7 @@ class Nothing<A> implements INothing<A> {
   }
 
   equals<B>(a: IMaybe<B>): boolean {
-    return a.isNothing;
+    return a.isNothing();
   }
 
   bind<B>(fn: (value: A) => IMaybe<B>): IMaybe<B> {
@@ -112,7 +112,7 @@ class Just<A> implements IJust<A> {
 
   equals(a: IMaybe<A>): boolean {
     return (a.isJust)
-      ? isEqualFP(this._value, (a as any)._value)
+      ? _isEqual(this._value, (a as any)._value)
       : false;
   }
 

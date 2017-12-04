@@ -3,10 +3,10 @@
 /// <reference path="../typings/globals/require/index.d.ts" />
 
 import { expect } from 'chai';
-import { IMonad } from '../dist/core/algebra';
-import { Identity, IIdentity } from '../dist/monads/identity';
-import { Maybe, IMaybe } from '../dist/monads/maybe';
-import { Either, IEither } from '../dist/monads/either';
+import { IMonad } from '../lib/core/algebra';
+import { Identity, IIdentity } from '../lib/monads/identity';
+import { Maybe, IMaybe } from '../lib/monads/maybe';
+import { Either, IEither } from '../lib/monads/either';
 
 const _: any = require('lodash');
 

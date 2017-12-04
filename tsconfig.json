@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": true,
+    "noEmit": false,
+    "noResolve": false,
+    "noEmitOnError": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "stripInternal": true,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "allowJs": false
+  },
+  "exclude": [
+    ".history",
+    "node_modules",
+    "tmp"
+  ]
+}
